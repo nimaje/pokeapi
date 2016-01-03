@@ -20,7 +20,10 @@ import csv
 import os
 import os.path
 import re
+import sys
+
 from django.db import migrations, connection
+
 from pokemon_v2.models import *
 
 
@@ -41,11 +44,13 @@ def with_iter(context, iterable=None):
         for value in iterable:
             yield value
 
+def create_load_data(data_dir):
+    def load_data(file_name):
+        # with_iter closes the file when it has finished
+        return csv.reader(with_iter(open(os.path.join(data_dir, file_name),
+            'rt', delimiter=',')
 
-def load_data(fileName):
-    # with_iter closes the file when it has finished
-    return csv.reader(with_iter(open(DATA_LOCATION + fileName, 'rt')), delimiter=',')
-
+load_data = default_load_data = create_load_data(DATA_LOCATION2)
 
 def clear_table(model):
     table_name = model._meta.db_table
@@ -2386,4 +2391,6 @@ def build_all():
     build_pal_parks()
 
 if __name__ == '__main__':
+    if len(sys.argv) == 2:
+        load_data = create_load_data(sys.argv[1])
     build_all()

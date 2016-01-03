@@ -74,6 +74,16 @@ $ from data.v2.build import build_all
 $ build_all()
 ```
 Each time the build script is run it will iterate over each table in the database, wipe it and rewrite each row using the data found in data/v2/csv.
+
+If you want to use other data (WIP: remove the data out of the repo and use a download script) you have to run:
+```
+$ from data.v2 import build
+$ build.load_data = build.create_load_data(path_to_data)
+$ build.build_all()
+```
+This changes the function to load the data to use your path if you have a local copy of [veekun/pokedex](https://github.com/veekun/pokedex) this should be `{path to pokedexrepo}/pokedex/data/csv/`
+If there are some files missing the script will fail when it tries to open the file.
+
 When building against sqlite we've heard it can take a ridiculously long time to finish building out the database. In this case you can set up just the portions of the db that you need.
 ```
 $ from data.v2.build import *
