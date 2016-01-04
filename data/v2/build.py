@@ -48,7 +48,8 @@ def create_load_data(data_dir):
     def load_data(file_name):
         # with_iter closes the file when it has finished
         return csv.reader(with_iter(open(os.path.join(data_dir, file_name),
-            'rt', delimiter=',')
+            'rt', delimiter=',')))
+    return load_data
 
 load_data = default_load_data = create_load_data(DATA_LOCATION2)
 
